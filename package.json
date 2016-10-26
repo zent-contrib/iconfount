@@ -1,0 +1,34 @@
+{
+  "name": "fount",
+  "version": "1.0.0",
+  "description": "Create web fonts from svg files",
+  "main": "src/index.js",
+  "bin": "bin/fount.js",
+  "scripts": {
+    "sample": "node bin/fount.js -c sample/config.json"
+  },
+  "keywords": [
+    "font",
+    "css",
+    "svg"
+  ],
+  "author": "Li Chen <lichen@youzan.com>",
+  "license": "MIT",
+  "dependencies": {
+    "ajv": "^4.8.2",
+    "base64-js": "^1.2.0",
+    "jade": "^1.11.0",
+    "jstransformer-stylus": "^1.1.0",
+    "lodash": "^4.16.4",
+    "mkdirp": "^0.5.1",
+    "rimraf": "^2.5.4",
+    "svg2ttf": "^4.0.2",
+    "svgpath": "^2.2.0",
+    "ttf2eot": "^2.0.0",
+    "ttf2woff": "^2.0.1",
+    "ttf2woff2": "^2.0.3",
+    "winston": "^2.2.0",
+    "xmldom": "^0.1.22",
+    "yargs": "^6.3.0"
+  }
+}

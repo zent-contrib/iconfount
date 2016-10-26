@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40.3 (33839) - http://www.bohemiancoding.com/sketch -->
+    <title>日历一</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="18-icon-图标" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="V1.1-17【Loading-加载】" transform="translate(-914.000000, -463.000000)" fill="#666666">
+            <g id="日历一" transform="translate(914.000000, 463.000000)">
+                <path d="M0,2.99188419 C0,1.89179693 0.894513756,1 1.99406028,1 L14.0059397,1 C15.1072288,1 16,1.89339733 16,2.99188419 L16,14.0081158 C16,15.1082031 15.1054862,16 14.0059397,16 L1.99406028,16 C0.892771196,16 0,15.1066027 0,14.0081158 L0,2.99188419 Z M5,10 L11,10 L11,11 L5,11 L5,10 Z M5,8 L11,8 L11,9 L5,9 L5,8 Z M0,5 L16,5 L16,6 L0,6 L0,5 Z M5,12 L11,12 L11,13 L5,13 L5,12 Z" id="Combined-Shape"></path>
+                <rect id="Rectangle-1004" x="4" y="0" width="1" height="3"></rect>
+                <rect id="Rectangle-1004-Copy" x="11" y="0" width="1" height="3"></rect>
+            </g>
+        </g>
+    </g>
+</svg>
