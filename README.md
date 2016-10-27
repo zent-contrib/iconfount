@@ -25,8 +25,11 @@ Options:
 
 #### name
 type: `string`
-required: `false`
+
+required: `false` 
+
 default: fount
+
 字体名字，最好英文吧
 
 #### output
