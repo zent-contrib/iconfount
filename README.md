@@ -42,6 +42,7 @@ required: `true`
 输出字体、样式以及示例文件的目录，可以是相对路径或者绝对路径
 
 #### hinting
+
 type: `boolean`
 
 required: `false`
@@ -52,6 +53,7 @@ default: `false`
 建议开启。
 
 #### correct_contour_direction
+
 type: `boolean`
 
 required: `false`
@@ -62,6 +64,7 @@ default: `false`
 建议开启。
 
 #### units_per_em
+
 type: `number`
 
 required: `false`
@@ -72,6 +75,7 @@ default: `1000`
 不清楚的话不要设置。
 
 #### ascent
+
 type: `number`
 
 required: `false`
@@ -82,6 +86,7 @@ default: `850`
 不清楚的话不要设置。
 
 #### weight
+
 type: `number`
 
 required: `false`
@@ -91,6 +96,7 @@ default: `400`
 字体的粗细，和`font-weight`属性一致
 
 #### start_codepoint
+
 type: `number`
 
 required: `false`
@@ -102,6 +108,7 @@ Unicode的[Private Use Area](https://en.wikipedia.org/wiki/Private_Use_Areas#Pri
 虽然planes 15 and 16也是Private Use Areas，但是我们不支持这两个区间。
 
 #### glyphs_dir
+
 type: `string`
 
 required: `true`
@@ -109,6 +116,7 @@ required: `true`
 存放svg文件的根目录，可以是相对目录或者绝对目录。
 
 #### glyphs
+
 type: `Array.<Glyph>`
 
 required: `true`
@@ -116,6 +124,7 @@ required: `true`
 所有图标的定义，每个图标有如下几个属性.
 
 ##### glyphs.keywords
+
 type: `Array.<string>`
 
 required: `false`
@@ -125,6 +134,7 @@ default: `[]`
 图标的一些tag，主要是描述图标的作用.
 
 ##### glyphs.src
+
 type: `string`
 
 required: `true`
@@ -132,6 +142,7 @@ required: `true`
 图标相对`glyphs_dir`的路径。
 
 ##### glyphs.css
+
 type: `string`
 
 required: `true`
@@ -140,6 +151,7 @@ required: `true`
 是`true`，图标最终的class是`${css}${meta.css_prefix_text}`。
 
 #### meta
+
 type: `Object`
 
 required: `false`
@@ -147,6 +159,7 @@ required: `false`
 一些元数据
 
 ##### meta.author
+
 type: `string`
 
 required: `false`
@@ -156,6 +169,7 @@ default: `''`
 字体的作者
 
 ##### meta.license
+
 type: `string`
 
 required: `false`
@@ -165,6 +179,7 @@ default: `''`
 字体的许可协议
 
 ##### meta.license_url
+
 type: `string`
 
 required: `false`
@@ -174,6 +189,7 @@ default: `''`
 字体许可协议链接
 
 ##### meta.homepage
+
 type: `string`
 
 required: `false`
@@ -183,6 +199,7 @@ default: `''`
 字体主页
 
 ##### meta.css_prefix_text
+
 type: `boolean`
 
 required: `false`
@@ -192,6 +209,7 @@ default: `'icon-'`
 图标css前缀。
 
 #### meta.css_use_suffix
+
 type: `boolean`
 
 required: `false`
@@ -201,6 +219,7 @@ default: `false`
 如果为`true`, `meta.css_prefix_text`将被用作css后缀。
 
 ##### meta.columns
+
 type: `number`
 
 required: `false`
@@ -210,6 +229,7 @@ default: `4`
 示例页面中每行的列数。
 
 ##### meta.filename_hash
+
 type: `boolean`
 
 required: `false`
