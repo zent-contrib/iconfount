@@ -92,7 +92,7 @@ function fontConfig(config) {
   if (!_.isEmpty(config.name)) {
     fontname = String(config.name).replace(/[^a-z0-9\-_]+/g, '-');
   } else {
-    fontname = 'font';
+    fontname = 'fount';
   }
 
   var glyphsInfo = collectGlyphsInfo(config);

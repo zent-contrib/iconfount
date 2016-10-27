@@ -1,8 +1,8 @@
 ## Install fontforge command line tools
 
-`brew install fontforge --with-extra-tools --giflib --with-libspiro`
+`brew install fontforge`
 
-Follow the guide on the screen to install fontforge module to your python path.
+> Follow the guide on the screen to install fontforge module to your python path.
 
 ## Enable ucs2 support in Python
 

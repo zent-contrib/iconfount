@@ -7,7 +7,7 @@ module.exports = {
   additionalProperties: false,
   required: ['name', 'output', 'glyphs', 'glyphs_dir'],
   properties: {
-    name: { type: 'string', default: 'fount' },
+    name: { type: 'string' },
     output: { type: 'string' },
     hinting: { type: 'boolean' },
     correct_contour_direction: { type: 'boolean' },
