@@ -24,15 +24,17 @@ Options:
 ### Parameters
 
 #### name
+
 type: `string`
 
 required: `false` 
 
-default: fount
+default: `'fount'`
 
 字体名字，最好英文吧
 
 #### output
+
 type: `string`
 
 required: `true`
