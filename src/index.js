@@ -81,7 +81,8 @@ function collectGlyphsInfo(config) {
 }
 
 function fontConfig(config) {
-  config.hinting = (config.hinting !== false);
+  config.hinting = !!config.hinting;
+  config.correct_contour_direction = !!config.correct_contour_direction;
   config.units_per_em = +config.units_per_em || 1000;
   config.ascent = +config.ascent || 850;
   config.weight = config.weight || 400;
@@ -111,8 +112,9 @@ function fontConfig(config) {
       descent: config.ascent - config.units_per_em,
       weight: config.weight
     },
-    output: config.output,
+    output: path.resolve(config.output),
     hinting: config.hinting,
+    correct_contour_direction: config.correct_contour_direction,
     meta: _.extend({}, meta, {
       // Used by the demo page
       columns: meta.columns || 4,
@@ -131,7 +133,7 @@ function generateFonts(buildConfig) {
   var fontname = buildConfig.font.fontname;
   var files;
 
-  log.info('Start generation:', buildConfig);
+  log.info('Start generation:');
 
   // Collect file paths.
   var fileNameHash = buildConfig.meta.filename_hash;
@@ -141,13 +143,11 @@ function generateFonts(buildConfig) {
     svg:         path.join(buildConfig.output, 'font', fontNameWithHash + '.svg'),
     ttf:         path.join(buildConfig.output, 'font', fontNameWithHash + '.ttf'),
     ttfUnhinted: path.join(buildConfig.output, 'font', fontNameWithHash + '-unhinted.ttf'),
+    ttfDirectionNotCorrected: path.join(buildConfig.output, 'font', fontNameWithHash + '-direction-not-corrected.ttf'),
     eot:         path.join(buildConfig.output, 'font', fontNameWithHash + '.eot'),
     woff:        path.join(buildConfig.output, 'font', fontNameWithHash + '.woff'),
     woff2:       path.join(buildConfig.output, 'font', fontNameWithHash + '.woff2')
   };
-
-  // Generate initial SVG font.
-  var svgOutput = SVG_FONT_TEMPLATE(buildConfig);
 
   // Prepare temporary working directory.
   rimraf.sync(buildConfig.output);
@@ -155,23 +155,28 @@ function generateFonts(buildConfig) {
   mkdirp.sync(path.join(buildConfig.output, 'font'));
   mkdirp.sync(path.join(buildConfig.output, 'css'));
 
-  // Write client config and initial SVG font.
+  // Write client config
   var configOutput = JSON.stringify(buildConfig, null, '  ');
-
   fs.writeFileSync(files.config, configOutput, 'utf8');
+  log.info('write build config');
+
+  // Generate initial SVG font.
+  var svgOutput = SVG_FONT_TEMPLATE(buildConfig);
   fs.writeFileSync(files.svg, svgOutput, 'utf8');
+  log.info('write svg font');
 
   // Convert SVG to TTF
   var ttf = svg2ttf(svgOutput, { copyright: buildConfig.font.copyright });
   fs.writeFileSync(files.ttf, new Buffer(ttf.buffer));
+  log.info('write ttf first-pass');
 
   // Autohint the resulting TTF.
-  var maxSegments = _.maxBy(buildConfig.glyphs, glyph => glyph.segments).segments;
-
-  // KLUDGE :)
   // Don't allow hinting if font has "strange" glyphs.
   // That's useless anyway, and can hang ttfautohint < 1.0
+  var maxSegments = _.maxBy(buildConfig.glyphs, glyph => glyph.segments).segments;
   if (maxSegments <= 500 && buildConfig.hinting) {
+    log.info('autohint with ttfautohint');
+
     fs.renameSync(files.ttf, files.ttfUnhinted);
     child_process.execFileSync('ttfautohint', [
       '--no-info',
@@ -184,16 +189,37 @@ function generateFonts(buildConfig) {
       files.ttf
     ], { cwd: process.cwd() });
     fs.unlinkSync(files.ttfUnhinted);
+    log.info('write ttf autohint');
+  }
+
+  // 主要是处理有些fill-rule设置为evenodd的svg文件，因为ttf支持non-zero的模式，所以会导致
+  // 生成的字体文件里有些路径被错误填充了
+  // 这个功能依赖fontforge
+  if (buildConfig.correct_contour_direction) {
+    log.info('try correct contour direction with fontforge');
+
+    fs.renameSync(files.ttf, files.ttfDirectionNotCorrected);
+    child_process.execFileSync(path.resolve(__dirname, '../scripts/correct-direction.py'), [
+      files.ttfDirectionNotCorrected,
+      files.ttf
+    ], { cwd: process.cwd() });
+    fs.unlinkSync(files.ttfDirectionNotCorrected);
+    log.info('write ttf correct direction');
   }
 
   // generate other font types
   var ttfOutput = new Uint8Array(fs.readFileSync(files.ttf));
   var eotOutput = ttf2eot(ttfOutput).buffer;
   fs.writeFileSync(files.eot, new Buffer(eotOutput));
+  log.info('write eot file');
+
   var woffOutput = ttf2woff(ttfOutput).buffer;
   fs.writeFileSync(files.woff, new Buffer(woffOutput));
+  log.info('write woff file');
+
   var woff2Output = ttf2woff2(ttfOutput).buffer;
   fs.writeFileSync(files.woff2, new Buffer(woff2Output));
+  log.info('write woff2 file');
 
   // Write template files. (generate dynamic and copy static)
   _.forEach(TEMPLATES, function(templateData, templateName) {
@@ -206,7 +232,8 @@ function generateFonts(buildConfig) {
                     .replace('%TTF64%', b64.fromByteArray(ttfOutput));
 
     fs.writeFileSync(outputFile, outputData, 'utf8');
-  })
+  });
+  log.info('write demo/css files');
 
   var timeEnd = Date.now();
   log.info('Generated in ' + (timeEnd - timeStart) / 1000)

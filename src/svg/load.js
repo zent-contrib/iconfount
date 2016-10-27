@@ -29,7 +29,7 @@ module.exports = function loadSvgImage(data, glyph, defaultCodePoint) {
   var skipped = _.union(result.ignoredTags, result.ignoredAttrs);
 
   if (skipped.length > 0) {
-    log.warn(glyph.src, 'skiped_tags', {skipped: skipped.toString()}, 'if image doesn\'t look as expected please convert to compound path manually');
+    log.warn(glyph.src, {skipped: skipped.toString()});
   } else if (!result.guaranteed) {
     log.warn(glyph.src, 'if image doesn\'t look as expected please convert to compound path manually');
   }

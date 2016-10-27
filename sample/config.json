@@ -2,6 +2,7 @@
   "name": "zenticons",
   "output": "build",
   "hinting": true,
+  "correct_contour_direction": true,
   "units_per_em": 1000,
   "ascent": 850,
   "weight": 400,

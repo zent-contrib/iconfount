@@ -10,6 +10,7 @@ module.exports = {
     name: { type: 'string', default: 'fount' },
     output: { type: 'string' },
     hinting: { type: 'boolean' },
+    correct_contour_direction: { type: 'boolean' },
     units_per_em: { type: 'integer', minimum: 10 },
     ascent: { type: 'integer', minimum: 10 },
     weight: { type: 'number', minimum: 100 },
