@@ -25,7 +25,7 @@ SVG支持的基础图形包括，矩形(`<rect>`)、圆(`<circle>`)、椭圆(`<e
 这个规则比较简单：从点往任意方向画一条射线，如果这条射线和路径的交点个数是偶数则认为点在路径外；
 如果交点个数是奇数则认为点在路径内。
 
-![fillrule-evenodd](img/fillrule-evenodd.svg)
+![fillrule-evenodd](img/fillrule-evenodd.png)
 
 ## `nonzero`
 
@@ -33,7 +33,7 @@ SVG支持的基础图形包括，矩形(`<rect>`)、圆(`<circle>`)、椭圆(`<e
 从左向右和射线相交，计数加一；如果路径中的某段从右向左和射线相交，计数减一。最终，如果计数为零则
 点在路径外；如果计数不为零则点在路径内。
 
-![fillrule-nonzero](img/fillrule-nonzero.svg)
+![fillrule-nonzero](img/fillrule-nonzero.png)
 
 ## `fill-rule`对生成字体的影响
 
