@@ -1,3 +1,7 @@
+# fontforge Guide
+
+自动修正字体轮廓方向需要安装fontforge。
+
 ## Install fontforge command line tools
 
 `brew install fontforge`
