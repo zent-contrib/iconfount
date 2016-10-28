@@ -17,6 +17,39 @@ Options:
   -t, --test    test configuration and exit  [boolean]
 ```
 
+## Output files
+
+```text
+├── LICENSE.txt                       版权信息
+├── README.txt                        说明文件
+├── codes.json                        字符的详细定义，可用于外部工具生成样式代码
+├── config.json                       调试用，请忽略
+├── css
+│   ├── animation.css                 调试用，动画
+│   ├── zenticons-codes.css           只包含字符codepoint的css文件
+│   ├── zenticons-embedded.css        区别在于WOFF内联了，规避CORS时有用
+│   ├── zenticons-ie7-codes.css       IE7专用
+│   ├── zenticons-ie7.css             IE7专用
+│   └── zenticons.css                 完整的样式，包括font-face以及各个字符的样式
+├── demo.html                         预览文件
+└── font
+    ├── zenticons-db0a845be8.eot      IE专用
+    ├── zenticons-db0a845be8.svg      老的Safari专用
+    ├── zenticons-db0a845be8.ttf
+    ├── zenticons-db0a845be8.woff
+    └── zenticons-db0a845be8.woff2
+```
+
+css目录下已经提供了两种样式选择：完整的和只包含字符定义的css。如果仍不能满足需求，可以使用`codes.json`
+文件自己生成样式。
+
+## 第三方依赖
+
+这些依赖是可选的，用到特定选项时才需要安装。
+
+1. ttfautohint: `brew install ttfautohint`
+2. fontforge: 参见[安装fontforge](doc/fontforge.md)
+
 ## Config file
 
 支持`json`或者`js`文件，`js`文件的话直接`export`一个包含配置信息的对象。
@@ -53,7 +86,7 @@ required: `false`
 
 default: `false`
 
-是否使用`ttfautohint`对字体文件做hint，需要安装`ttfautohint`，`brew install ttfautohint`。
+是否使用`ttfautohint`对字体文件做hint，需要安装`ttfautohint`。
 建议开启。
 
 #### units_per_em
@@ -152,7 +185,7 @@ required: `false`
 
 default: `false`
 
-是否使用`fontforge`对字符做轮廓方向修正，需要安装`fontforge`，安装具体参见`doc/fontforge.md`。
+是否使用`fontforge`对字符做轮廓方向修正，需要安装`fontforge`。
 视情况开启，如果生成的字符填充位置不正常，再考虑开启。不过做好是让设计修改原图的路径方向，具体请看
 `doc/contour-direction.md`
 
