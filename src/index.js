@@ -63,6 +63,32 @@ function getRandomString() {
   return hash.digest('hex').slice(-10);
 }
 
+/**
+ * 生成glyphs的json信息，可以给外部工具用来生成代码
+ * @return {[type]} [description]
+ */
+function generateGlyphsJson(buildConfig) {
+  var prefix = buildConfig.meta.css_prefix_text;
+  var useSuffix = buildConfig.meta.css_use_suffix;
+  var glyphs = buildConfig.glyphs;
+
+  if (_.isEmpty(glyphs)) {
+    return [];
+  }
+
+  return glyphs.map(function(g) {
+    var css = useSuffix ? g.css + prefix : prefix + g.css;
+    var hex = '0x' + g.code.toString(16);
+    return {
+      name: g.css,
+      css: css,
+      hexCodepoint: hex,
+      codepoint: g.code,
+      keywords: g.keywords
+    }
+  });
+}
+
 function collectGlyphsInfo(config) {
   var scale = config.units_per_em / 1000;
   var badGlyphs = [];
@@ -78,7 +104,7 @@ function collectGlyphsInfo(config) {
     }
 
     return _.assign({},
-      _.pick(glyph, ['src', 'code', 'css']),
+      _.pick(glyph, ['src', 'code', 'css', 'keywords']),
       {
         width: +(glyph.svg.width * scale).toFixed(1),
         d: sp.toString(),
@@ -155,6 +181,7 @@ function generateFonts(buildConfig) {
   var fileNameHash = buildConfig.meta.filename_hash;
   var fontNameWithHash = fontname + fileNameHash;
   files = {
+    codes:       path.join(buildConfig.output, 'codes.json'),
     config:      path.join(buildConfig.output, 'config.json'),
     svg:         path.join(buildConfig.output, 'font', fontNameWithHash + '.svg'),
     ttf:         path.join(buildConfig.output, 'font', fontNameWithHash + '.ttf'),
@@ -172,9 +199,14 @@ function generateFonts(buildConfig) {
   mkdirp.sync(path.join(buildConfig.output, 'css'));
 
   // Write client config
-  var configOutput = JSON.stringify(buildConfig, null, '  ');
+  var configOutput = JSON.stringify(buildConfig, null, 2);
   fs.writeFileSync(files.config, configOutput, 'utf8');
   log.info('write build config');
+
+  // Write codes
+  var codesJSON = JSON.stringify(generateGlyphsJson(buildConfig), null, 2);
+  fs.writeFileSync(files.codes, codesJSON, 'utf8');
+  log.info('write codes');
 
   // Generate initial SVG font.
   var svgOutput = SVG_FONT_TEMPLATE(buildConfig);
