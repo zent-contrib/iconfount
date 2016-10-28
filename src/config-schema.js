@@ -10,7 +10,6 @@ module.exports = {
     name: { type: 'string' },
     output: { type: 'string' },
     hinting: { type: 'boolean' },
-    correct_contour_direction: { type: 'boolean' },
     units_per_em: { type: 'integer', minimum: 10 },
     ascent: { type: 'integer', minimum: 10 },
     weight: { type: 'number', minimum: 100 },
@@ -24,6 +23,7 @@ module.exports = {
         css: { type: 'string' },
         src: { type: 'string' },
         keyword: { type: 'array',  minItems: 1, items: { type: 'string' } },
+        correct_contour_direction: { type: 'boolean' },
         required: ['css', 'src']
       }
     },

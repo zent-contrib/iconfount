@@ -21,6 +21,8 @@ Options:
 
 支持`json`或者`js`文件，`js`文件的话直接`export`一个包含配置信息的对象。
 
+`sample/`目录下有一个示例配置文件，仅供参考。
+
 ### Parameters
 
 #### name
@@ -50,17 +52,6 @@ required: `false`
 default: `false`
 
 是否使用`ttfautohint`对字体文件做hint，需要安装`ttfautohint`，`brew install ttfautohint`。
-建议开启。
-
-#### correct_contour_direction
-
-type: `boolean`
-
-required: `false`
-
-default: `false`
-
-是否使用`fontforge`对字体文件做轮廓方向修正，需要安装`fontforge`，具体参见`doc/fontforge`。
 建议开启。
 
 #### units_per_em
@@ -149,6 +140,19 @@ required: `true`
 
 图标的CSS名字，图标最终的class是`${meta.css_prefix_text}${css}`，如果`meta.css_use_suffix`
 是`true`，图标最终的class是`${css}${meta.css_prefix_text}`。
+
+
+##### glyphs.correct_contour_direction
+
+type: `boolean`
+
+required: `false`
+
+default: `false`
+
+是否使用`fontforge`对字符做轮廓方向修正，需要安装`fontforge`，安装具体参见`doc/fontforge.md`。
+视情况开启，如果生成的字符填充位置不正常，再考虑开启。不过做好是让设计修改原图的路径方向，具体请看
+`doc/contour-direction.md`
 
 #### meta
 

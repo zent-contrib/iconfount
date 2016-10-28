@@ -25,37 +25,27 @@ SVG支持的基础图形包括，矩形(`<rect>`)、圆(`<circle>`)、椭圆(`<e
 这个规则比较简单：从点往任意方向画一条射线，如果这条射线和路径的交点个数是偶数则认为点在路径外；
 如果交点个数是奇数则认为点在路径内。
 
-<svg width="12cm" height="4cm" viewBox="0 0 1200 400"  version="1.1"
-     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <desc>Example fillrule-evenodd - demonstrates fill-rule:evenodd</desc>
+![fillrule-evenodd](img/fillrule-evenodd.svg)
 
-  <rect x="1" y="1" width="1198" height="398"
-        fill="none" stroke="blue" />
-  <defs>
-    <path id="Triangle" d="M 16,0 L -8,9 v-18 z" fill="black" stroke="none" />
-  </defs>
-  <g fill-rule="evenodd" fill="red" stroke="black" stroke-width="3" >
-    <path d="M 250,75 L 323,301 131,161 369,161 177,301 z" />
-    <use xlink:href="#Triangle" transform="translate(306.21 249) rotate(72)" overflow="visible"  />
-    <use xlink:href="#Triangle" transform="translate(175.16,193.2) rotate(216)" overflow="visible"  />
-    <use xlink:href="#Triangle" transform="translate(314.26,161) rotate(0)" overflow="visible"  />
-    <use xlink:href="#Triangle" transform="translate(221.16,268.8) rotate(144)" overflow="visible"  />
-    <use xlink:href="#Triangle" transform="translate(233.21,126.98) rotate(288)" overflow="visible"  />
-    <path d="M 600,81 A 107,107 0 0,1 600,295 A 107,107 0 0,1 600,81 z
-             M 600,139 A 49,49 0 0,1 600,237 A 49,49 0 0,1 600,139 z" />
-    <use xlink:href="#Triangle" transform="translate(600,188) rotate(0) translate(107,0) rotate(90)" overflow="visible"  />
-    <use xlink:href="#Triangle" transform="translate(600,188) rotate(120) translate(107,0) rotate(90)" overflow="visible"  />
-    <use xlink:href="#Triangle" transform="translate(600,188) rotate(240) translate(107,0) rotate(90)" overflow="visible"  />
-    <use xlink:href="#Triangle" transform="translate(600,188) rotate(60) translate(49,0) rotate(90)" overflow="visible"  />
-    <use xlink:href="#Triangle" transform="translate(600,188) rotate(180) translate(49,0) rotate(90)" overflow="visible"  />
-    <use xlink:href="#Triangle" transform="translate(600,188) rotate(300) translate(49,0) rotate(90)" overflow="visible"  />
-    <path d="M 950,81 A 107,107 0 0,1 950,295 A 107,107 0 0,1 950,81 z
-             M 950,139 A 49,49 0 0,0 950,237 A 49,49 0 0,0 950,139 z" />
-    <use xlink:href="#Triangle" transform="translate(950,188) rotate(0) translate(107,0) rotate(90)" overflow="visible"  />
-    <use xlink:href="#Triangle" transform="translate(950,188) rotate(120) translate(107,0) rotate(90)" overflow="visible"  />
-    <use xlink:href="#Triangle" transform="translate(950,188) rotate(240) translate(107,0) rotate(90)" overflow="visible"  />
-    <use xlink:href="#Triangle" transform="translate(950,188) rotate(60) translate(49,0) rotate(-90)" overflow="visible"  />
-    <use xlink:href="#Triangle" transform="translate(950,188) rotate(180) translate(49,0) rotate(-90)" overflow="visible"  />
-    <use xlink:href="#Triangle" transform="translate(950,188) rotate(300) translate(49,0) rotate(-90)" overflow="visible"  />
-  </g>
-</svg>
+## `nonzero`
+
+这个规则的定义是这样的：从点往任意方向画一条射线，我们维护一个计数，从零开始，如果路径中的某段
+从左向右和射线相交，计数加一；如果路径中的某段从右向左和射线相交，计数减一。最终，如果计数为零则
+点在路径外；如果计数不为零则点在路径内。
+
+![fillrule-nonzero](img/fillrule-nonzero.svg)
+
+## `fill-rule`对生成字体的影响
+
+从上面的规则描述中我们知道，`evenodd`判断点在路径内／外与路径的方向是无关的，而`nonzero`是和
+路径方向有关系的，正是这个区别会导致有些SVG生成的字符会出现填充错误的情况。
+
+## 解决方案
+
+在Sketch中画图的时候据我所知是不显示路径方向的，我们假设所有路径都是顺时针方向，那么一些复杂图形
+在两种`fill-rule`下会显示成不同的样子。如果想让图片在两种模式下显示一样，Sketch中有一个操作可以
+做到，但是比较麻烦，选择不正常的路径在菜单`Layer -> Paths -> Reverse Order`一般可以解决问题。
+这种方式需要人工干预，尤其是在Sketch下无法看到路径方向的情况下操作很不方便。
+
+`fount`的`correct_contour_direction`参数可以控制是否自动修复这些有问题的路径。这个功能需要
+安装`fontforge`，而且有个别情况下这个功能可能无法自动修复这些问题。

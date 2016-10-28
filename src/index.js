@@ -13,6 +13,7 @@ var ttf2woff2 = require('ttf2woff2');
 var child_process = require('child_process');
 var jade = require('jade');
 var b64 = require('base64-js');
+var crypto = require('crypto');
 
 var loadSvg = require('./svg');
 var log = require('./log');
@@ -55,29 +56,44 @@ var TEMPLATES = _.reduce({
   return templates;
 }, {});
 
+function getRandomString() {
+  var hash = crypto.createHash('sha256');
+  var randomNumber = Date.now() + _.random(0, 1, true) * 1000000;
+  hash.update(randomNumber + '');
+  return hash.digest('hex').slice(-10);
+}
+
 function collectGlyphsInfo(config) {
   var scale = config.units_per_em / 1000;
+  var badGlyphs = [];
   var result = _.map(config.glyphs, function (glyph) {
     var sp = svgpath(glyph.svg.path)
               .scale(scale, -scale)
               .translate(0, config.ascent)
               .abs().round(0).rel();
 
-    return {
-      src: glyph.src,
-      // uid:      glyph.uid,
-      code: glyph.code,
-      css: glyph.css,
-      width: +(glyph.svg.width * scale).toFixed(1),
-      d: sp.toString(),
-      segments: sp.segments.length
-    };
+    // 把需要调整路径方向的字符保存起来，后面会交给fontforge处理
+    if (glyph.correct_contour_direction) {
+      badGlyphs.push(glyph.code);
+    }
+
+    return _.assign({},
+      _.pick(glyph, ['src', 'code', 'css']),
+      {
+        width: +(glyph.svg.width * scale).toFixed(1),
+        d: sp.toString(),
+        segments: sp.segments.length
+      }
+    );
   });
 
   // Sort result by original codes.
   result.sort((a, b) => a.code - b.code);
 
-  return result;
+  return {
+    glyphs: result,
+    badGlyphs: badGlyphs
+  };
 }
 
 function fontConfig(config) {
@@ -96,7 +112,7 @@ function fontConfig(config) {
   }
 
   var glyphsInfo = collectGlyphsInfo(config);
-  if (_.isEmpty(glyphsInfo)) return null;
+  if (_.isEmpty(glyphsInfo.glyphs)) return null;
 
   var meta = config.meta || {};
   return {
@@ -114,7 +130,6 @@ function fontConfig(config) {
     },
     output: path.resolve(config.output),
     hinting: config.hinting,
-    correct_contour_direction: config.correct_contour_direction,
     meta: _.extend({}, meta, {
       // Used by the demo page
       columns: meta.columns || 4,
@@ -122,9 +137,10 @@ function fontConfig(config) {
       css_use_suffix: Boolean(meta.css_use_suffix),
 
       // append hash to font file name
-      filename_hash: Boolean(meta.filename_hash) ? '-' + Math.floor(Math.random() * 100000000) : ''
+      filename_hash: Boolean(meta.filename_hash) ? '-' + getRandomString() : ''
     }),
-    glyphs: glyphsInfo
+    glyphs: glyphsInfo.glyphs,
+    badGlyphs: glyphsInfo.badGlyphs
   };
 };
 
@@ -195,14 +211,14 @@ function generateFonts(buildConfig) {
   // 主要是处理有些fill-rule设置为evenodd的svg文件，因为ttf支持non-zero的模式，所以会导致
   // 生成的字体文件里有些路径被错误填充了
   // 这个功能依赖fontforge
-  if (buildConfig.correct_contour_direction) {
+  if (!_.isEmpty(buildConfig.badGlyphs)) {
     log.info('try correct contour direction with fontforge');
 
     fs.renameSync(files.ttf, files.ttfDirectionNotCorrected);
     child_process.execFileSync(path.resolve(__dirname, '../scripts/correct-direction.py'), [
       files.ttfDirectionNotCorrected,
       files.ttf
-    ], { cwd: process.cwd() });
+    ].concat(buildConfig.badGlyphs), { cwd: process.cwd() });
     fs.unlinkSync(files.ttfDirectionNotCorrected);
     log.info('write ttf correct direction');
   }

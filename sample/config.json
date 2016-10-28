@@ -2,20 +2,9 @@
   "name": "zenticons",
   "output": "build",
   "hinting": true,
-  "correct_contour_direction": true,
   "units_per_em": 1000,
   "ascent": 850,
   "weight": 400,
-  "meta": {
-    "author": "lichen",
-    "license": "MIT",
-    "license_url": "http://youzan.com",
-    "homepage": "http://youzan.com",
-    "css_prefix_text": "zent-icon-",
-    "css_use_suffix": false,
-    "columns": 4,
-    "filename_hash": true
-  },
   "start_codepoint": 59392,
   "glyphs_dir": "./sample/svg",
   "glyphs": [{
@@ -29,26 +18,31 @@
   }, {
     "keywords": ["decorate"],
     "src": "decorate.svg",
-    "css": "decorate"
+    "css": "decorate",
+    "correct_contour_direction": true
   }, {
     "keywords": ["calendar"],
     "src": "calendar.svg",
-    "css": "calendar"
+    "css": "calendar",
+    "correct_contour_direction": true
   }, {
     "keywords": ["shop"],
     "src": "shop.svg",
-    "css": "shop"
-  }, {
-    "keywords": ["calendar"],
-    "src": "cal.svg",
-    "css": "cal"
-  }, {
-    "keywords": ["calendar optimized"],
-    "src": "calendar-opt.svg",
-    "css": "calendar-opt"
+    "css": "shop",
+    "correct_contour_direction": true
   }, {
     "keywords": ["browser"],
     "src": "browser.svg",
     "css": "browser"
-  }]
+  }],
+  "meta": {
+    "author": "lichen",
+    "license": "MIT",
+    "license_url": "http://youzan.com",
+    "homepage": "http://youzan.com",
+    "css_prefix_text": "zent-icon-",
+    "css_use_suffix": false,
+    "columns": 4,
+    "filename_hash": true
+  }
 }

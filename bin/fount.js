@@ -27,10 +27,11 @@ function main() {
 
   if (errors) {
     log.error(errors);
+    process.exit(-1);
   }
 
   if (argv.test) {
-    process.exit(errors ? -1 : 0);
+    process.exit(0);
   }
 
   build(configFile);
