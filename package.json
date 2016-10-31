@@ -4,6 +4,14 @@
   "description": "Create web fonts from svg files",
   "main": "src/index.js",
   "bin": "bin/fount.js",
+  "files": [
+    "bin",
+    "doc",
+    "sample",
+    "scripts",
+    "src",
+    "templates"
+  ],
   "scripts": {
     "sample": "node bin/fount.js -c sample/config.json"
   },
