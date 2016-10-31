@@ -1,6 +1,6 @@
 {
   "name": "@youzan/fount",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Create web fonts from svg files",
   "main": "src/index.js",
   "bin": "bin/fount.js",
