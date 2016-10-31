@@ -1,16 +1,18 @@
 {
   "name": "@youzan/fount",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Create web fonts from svg files",
-  "main": "src/index.js",
-  "bin": "bin/fount.js",
+  "main": "./src/index.js",
+  "bin": {
+    "fount": "./bin/fount.js"
+  },
   "files": [
-    "bin",
-    "doc",
-    "sample",
-    "scripts",
-    "src",
-    "templates"
+    "bin/",
+    "doc/",
+    "sample/",
+    "scripts/",
+    "src/",
+    "templates/"
   ],
   "scripts": {
     "sample": "node bin/fount.js -c sample/config.json"
