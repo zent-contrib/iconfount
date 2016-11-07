@@ -6,12 +6,15 @@ var path = require('path');
 var argv = require('yargs')
   .usage('Usage: $0 --config file [options]')
   .demand('config')
+  .version()
   .describe({
     config: 'config file to read',
-    test: 'test configuration and exit'
+    test: 'test configuration and exit',
+    version: 'show version number and quit'
   })
   .alias('c', 'config')
   .alias('t', 'test')
+  .alias('v', 'version')
   .boolean('test')
   .help('help', 'print this message and exit')
   .argv;
