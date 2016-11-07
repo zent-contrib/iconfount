@@ -34,6 +34,22 @@
     "keywords": ["browser"],
     "src": "browser.svg",
     "css": "browser"
+  }, {
+    "keywords": ["polygon"],
+    "src": "polygon.svg",
+    "css": "polygon"
+  }, {
+    "keywords": ["polygon", "fixed"],
+    "src": "polygon-fixed.svg",
+    "css": "polygon-fixed"
+  }, {
+    "keywords": ["rect"],
+    "src": "rect.svg",
+    "css": "rect"
+  }, {
+    "keywords": ["rect", "fixed"],
+    "src": "rect-fixed.svg",
+    "css": "rect-fixed"
   }],
   "meta": {
     "author": "lichen",

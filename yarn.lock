@@ -48,7 +48,7 @@ are-we-there-yet@~1.1.2:
     delegates "^1.0.0"
     readable-stream "^2.0.0 || ^1.1.13"
 
-argparse@^1.0.6:
+argparse@^1.0.6, argparse@^1.0.7:
   version "1.0.9"
   resolved "http://registry.npm.qima-inc.com/argparse/download/argparse-1.0.9.tgz#73d83bc263f86e97f8cc4f6bae1b0e90a7d22c86"
   dependencies:
@@ -162,7 +162,7 @@ caseless@~0.11.0:
   version "0.11.0"
   resolved "http://registry.npm.qima-inc.com/caseless/download/caseless-0.11.0.tgz#715b96ea9841593cc33067923f5ec60ebda4f7d7"
 
-chalk@^1.1.1:
+chalk@^1.1.1, chalk@^1.1.3:
   version "1.1.3"
   resolved "http://registry.npm.qima-inc.com/chalk/download/chalk-1.1.3.tgz#a8115c55e4a702fe4d150abd3872822a7e09fc98"
   dependencies:
@@ -175,6 +175,12 @@ chalk@^1.1.1:
 character-parser@1.2.1:
   version "1.2.1"
   resolved "http://registry.npm.qima-inc.com/character-parser/download/character-parser-1.2.1.tgz#c0dde4ab182713b919b970959a123ecc1a30fcd6"
+
+clap@^1.0.9:
+  version "1.1.1"
+  resolved "http://registry.npm.qima-inc.com/clap/download/clap-1.1.1.tgz#a8a93e0bfb7581ac199c4f001a5525a724ce696d"
+  dependencies:
+    chalk "^1.1.3"
 
 clean-css@^3.1.9:
   version "3.4.20"
@@ -199,11 +205,21 @@ co@^4.6.0:
   version "4.6.0"
   resolved "http://registry.npm.qima-inc.com/co/download/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
 
+coa@~1.0.1:
+  version "1.0.1"
+  resolved "http://registry.npm.qima-inc.com/coa/download/coa-1.0.1.tgz#7f959346cfc8719e3f7233cd6852854a7c67d8a3"
+  dependencies:
+    q "^1.1.2"
+
 code-point-at@^1.0.0:
   version "1.0.1"
   resolved "http://registry.npm.qima-inc.com/code-point-at/download/code-point-at-1.0.1.tgz#1104cd34f9b5b45d3eba88f1babc1924e1ce35fb"
   dependencies:
     number-is-nan "^1.0.0"
+
+colors@~1.1.2:
+  version "1.1.2"
+  resolved "http://registry.npm.qima-inc.com/colors/download/colors-1.1.2.tgz#168a4701756b6a7f51a12ce0c97bfa28c084ed63"
 
 colors@1.0.x:
   version "1.0.3"
@@ -273,6 +289,13 @@ css@~1.0.8:
   dependencies:
     css-parse "1.0.4"
     css-stringify "1.0.5"
+
+csso@~2.2.1:
+  version "2.2.1"
+  resolved "http://registry.npm.qima-inc.com/csso/download/csso-2.2.1.tgz#51fbb5347e50e81e6ed51668a48490ae6fe2afe2"
+  dependencies:
+    clap "^1.0.9"
+    source-map "^0.5.3"
 
 cubic2quad@^1.0.0:
   version "1.0.0"
@@ -349,6 +372,10 @@ es6-symbol@^3.0.2, es6-symbol@~3.1, es6-symbol@3:
 escape-string-regexp@^1.0.2:
   version "1.0.5"
   resolved "http://registry.npm.qima-inc.com/escape-string-regexp/download/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
+
+esprima@^2.6.0:
+  version "2.7.3"
+  resolved "http://registry.npm.qima-inc.com/esprima/download/esprima-2.7.3.tgz#96e3b70d5779f6ad49cd032673d1c312767ba581"
 
 extend@~3.0.0:
   version "3.0.0"
@@ -598,6 +625,13 @@ jodid25519@^1.0.0:
   dependencies:
     jsbn "~0.1.0"
 
+js-yaml@~3.6.1:
+  version "3.6.1"
+  resolved "http://registry.npm.qima-inc.com/js-yaml/download/js-yaml-3.6.1.tgz#6e5fe67d8b205ce4d22fad05b7781e8dadcc4b30"
+  dependencies:
+    argparse "^1.0.7"
+    esprima "^2.6.0"
+
 jsbn@~0.1.0:
   version "0.1.0"
   resolved "http://registry.npm.qima-inc.com/jsbn/download/jsbn-0.1.0.tgz#650987da0dd74f4ebf5a11377a2aa2d273e97dfd"
@@ -691,7 +725,7 @@ minimist@0.0.8:
   version "0.0.8"
   resolved "http://registry.npm.qima-inc.com/minimist/download/minimist-0.0.8.tgz#857fcabfc3397d2625b8228262e86aa7a011b05d"
 
-mkdirp, mkdirp@^0.5.0, "mkdirp@>=0.5 0", mkdirp@~0.5.0, mkdirp@0.5.x:
+mkdirp, mkdirp@^0.5.0, "mkdirp@>=0.5 0", mkdirp@~0.5.0, mkdirp@~0.5.1, mkdirp@0.5.x:
   version "0.5.1"
   resolved "http://registry.npm.qima-inc.com/mkdirp/download/mkdirp-0.5.1.tgz#30057438eac6cf7f8c4767f38648d6697d75c903"
   dependencies:
@@ -871,6 +905,10 @@ promise@~2.0:
   dependencies:
     is-promise "~1"
 
+q@^1.1.2:
+  version "1.4.1"
+  resolved "http://registry.npm.qima-inc.com/q/download/q-1.4.1.tgz#55705bcd93c5f3673530c2c2cbc0c2b3addc286e"
+
 qs@~6.2.0:
   version "6.2.1"
   resolved "http://registry.npm.qima-inc.com/qs/download/qs-6.2.1.tgz#ce03c5ff0935bc1d9d69a9f14cbd18e568d67625"
@@ -953,6 +991,10 @@ rimraf, rimraf@2:
   dependencies:
     glob "^7.0.5"
 
+sax@~1.2.1:
+  version "1.2.1"
+  resolved "http://registry.npm.qima-inc.com/sax/download/sax-1.2.1.tgz#7b8e656190b228e81a66aea748480d828cd2d37a"
+
 sax@0.5.x:
   version "0.5.8"
   resolved "http://registry.npm.qima-inc.com/sax/download/sax-0.5.8.tgz#d472db228eb331c2506b0e8c15524adb939d12c1"
@@ -974,6 +1016,10 @@ sntp@1.x.x:
   resolved "http://registry.npm.qima-inc.com/sntp/download/sntp-1.0.9.tgz#6541184cc90aeea6c6e7b35e2659082443c66198"
   dependencies:
     hoek "2.x.x"
+
+source-map@^0.5.3:
+  version "0.5.6"
+  resolved "http://registry.npm.qima-inc.com/source-map/download/source-map-0.5.6.tgz#75ce38f52bf0733c5a7f0c118d81334a2bb5f412"
 
 source-map@~0.1.7, source-map@0.1.x:
   version "0.1.43"
@@ -1078,6 +1124,18 @@ svg2ttf:
     svgpath "^2.1.5"
     xmldom "~0.1.22"
 
+svgo:
+  version "0.7.1"
+  resolved "http://registry.npm.qima-inc.com/svgo/download/svgo-0.7.1.tgz#287320fed972cb097e72c2bb1685f96fe08f8034"
+  dependencies:
+    coa "~1.0.1"
+    colors "~1.1.2"
+    csso "~2.2.1"
+    js-yaml "~3.6.1"
+    mkdirp "~0.5.1"
+    sax "~1.2.1"
+    whet.extend "~0.9.9"
+
 svgpath, svgpath@^2.1.5:
   version "2.2.0"
   resolved "https://registry.npmjs.org/svgpath/-/svgpath-2.2.0.tgz#6bbe4c4cad9170e3f338cc746cc2e0c0fc7a5064"
@@ -1161,6 +1219,10 @@ verror@1.3.6:
 void-elements@~2.0.1:
   version "2.0.1"
   resolved "http://registry.npm.qima-inc.com/void-elements/download/void-elements-2.0.1.tgz#c066afb582bb1cb4128d60ea92392e94d5e9dbec"
+
+whet.extend@~0.9.9:
+  version "0.9.9"
+  resolved "http://registry.npm.qima-inc.com/whet.extend/download/whet.extend-0.9.9.tgz#f877d5bf648c97e5aa542fadc16d6a259b9c11a1"
 
 which-module@^1.0.0:
   version "1.0.0"

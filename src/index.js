@@ -14,9 +14,13 @@ var child_process = require('child_process');
 var jade = require('jade');
 var b64 = require('base64-js');
 var crypto = require('crypto');
+var SVGOptimize = require('svgo');
 
 var loadSvg = require('./svg');
 var log = require('./log');
+
+// default config is enough
+var svgo = new SVGOptimize();
 
 var TEMPLATES_DIR = path.join(__dirname, '../templates');
 var SVG_FONT_TEMPLATE = _.template(fs.readFileSync(path.join(TEMPLATES_DIR, 'font/svg.tpl'), 'utf8'));
@@ -292,15 +296,32 @@ module.exports = function build(configFile) {
   config.start_codepoint = config.start_codepoint || 0xe800;
 
   var glyphsDir = config.glyphs_dir || process.cwd();
-  var glyphs = config.glyphs.map(function(glyph) {
+  var glyphsPromise = config.glyphs.map(function(glyph) {
     var xml = fs.readFileSync(path.join(glyphsDir, glyph.src), 'utf-8');
-    return loadSvg(xml, glyph, config.start_codepoint);
+
+    return new Promise(function(resolve, reject) {
+      try {
+        svgo.optimize(xml, function(cleanXml) {
+          if (cleanXml.error) {
+            return reject(error);
+          }
+
+          resolve(loadSvg(cleanXml.data, glyph, config.start_codepoint));
+        });
+      } catch (ex) {
+        reject(ex);
+      }
+    });
   });
-  var buildConfig = fontConfig(_.extend({}, config, {
-    glyphs: glyphs
-  }));
 
-  generateFonts(buildConfig);
+  return Promise.all(glyphsPromise)
+    .then(function(glyphs) {
+      var buildConfig = fontConfig(_.extend({}, config, {
+        glyphs: glyphs
+      }));
 
-  return buildConfig;
+      generateFonts(buildConfig);
+
+      return buildConfig;
+    });
 };
