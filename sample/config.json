@@ -6,7 +6,7 @@
   "ascent": 850,
   "weight": 400,
   "start_codepoint": 59392,
-  "glyphs_dir": "./sample/svg",
+  "glyphs_dir": "./svg",
   "glyphs": [{
     "keywords": ["custom"],
     "src": "custom.svg",

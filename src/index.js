@@ -292,10 +292,16 @@ function generateFonts(buildConfig) {
 }
 
 module.exports = function build(configFile) {
-  var config = require(path.resolve(configFile));
+  var configFilePath = path.resolve(configFile);
+  var config = require(configFilePath);
   config.start_codepoint = config.start_codepoint || 0xe800;
 
+  // glyphs dir is relative to config file
   var glyphsDir = config.glyphs_dir || process.cwd();
+  if (!path.isAbsolute(glyphsDir)) {
+    glyphsDir = path.join(path.dirname(configFilePath), glyphsDir);
+  }
+
   var glyphsPromise = config.glyphs.map(function(glyph) {
     var xml = fs.readFileSync(path.join(glyphsDir, glyph.src), 'utf-8');
 
