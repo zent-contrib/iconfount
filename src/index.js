@@ -1,3 +1,29 @@
+/**
+ * Modified from fontello project: https://github.com/fontello/fontello
+ *
+ * (The MIT License)
+ *
+ * Copyright (C) 2011 by Vitaly Puzrin
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+*/
+
 "use strict";
 
 var _ = require('lodash');
@@ -225,8 +251,16 @@ function generateFonts(buildConfig) {
   // Autohint the resulting TTF.
   // Don't allow hinting if font has "strange" glyphs.
   // That's useless anyway, and can hang ttfautohint < 1.0
+
+  // 貌似未处理的异常被吃掉了，所以先判断命令是否存在
+  var ttfautohintInstalled = false;
+  try {
+    child_process.execFileSync('ttfautohint', ['--version'], { cwd: process.cwd() });
+    ttfautohintInstalled = true;
+  } catch(ex) {}
+
   var maxSegments = _.maxBy(buildConfig.glyphs, glyph => glyph.segments).segments;
-  if (maxSegments <= 500 && buildConfig.hinting) {
+  if (ttfautohintInstalled && maxSegments <= 500 && buildConfig.hinting) {
     log.info('autohint with ttfautohint');
 
     fs.renameSync(files.ttf, files.ttfUnhinted);
@@ -240,6 +274,7 @@ function generateFonts(buildConfig) {
       files.ttfUnhinted,
       files.ttf
     ], { cwd: process.cwd() });
+
     fs.unlinkSync(files.ttfUnhinted);
     log.info('write ttf autohint');
   }
@@ -247,7 +282,20 @@ function generateFonts(buildConfig) {
   // 主要是处理有些fill-rule设置为evenodd的svg文件，因为ttf支持non-zero的模式，所以会导致
   // 生成的字体文件里有些路径被错误填充了
   // 这个功能依赖fontforge
+
+  // 貌似未处理的异常被吃掉了，所以先判断命令是否存在
+  var fontforgeInstalled = false;
+  try {
+    child_process.execFileSync(path.resolve(__dirname, '../scripts/test-fontforge.py'), [], { cwd: process.cwd() });
+    fontforgeInstalled = true;
+  } catch (ex) {}
+
   if (!_.isEmpty(buildConfig.badGlyphs)) {
+    if (!fontforgeInstalled) {
+      log.error('fontforge not installed');
+      process.exit(-1);
+    }
+
     log.info('try correct contour direction with fontforge');
 
     fs.renameSync(files.ttf, files.ttfDirectionNotCorrected);
