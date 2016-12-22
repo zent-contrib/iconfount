@@ -45,6 +45,11 @@ var SVGOptimize = require('svgo');
 var loadSvg = require('./svg');
 var log = require('./log');
 
+var ERROR = {
+  ttfautohint: 'ttfautohint not installed',
+  fontforge: 'fontforge python extension not installed'
+}
+
 // default config is enough
 var svgo = new SVGOptimize();
 
@@ -251,16 +256,20 @@ function generateFonts(buildConfig) {
   // Autohint the resulting TTF.
   // Don't allow hinting if font has "strange" glyphs.
   // That's useless anyway, and can hang ttfautohint < 1.0
-
-  // 貌似未处理的异常被吃掉了，所以先判断命令是否存在
-  var ttfautohintInstalled = false;
-  try {
-    child_process.execFileSync('ttfautohint', ['--version'], { cwd: process.cwd() });
-    ttfautohintInstalled = true;
-  } catch(ex) {}
-
   var maxSegments = _.maxBy(buildConfig.glyphs, glyph => glyph.segments).segments;
-  if (ttfautohintInstalled && maxSegments <= 500 && buildConfig.hinting) {
+  if (maxSegments <= 500 && buildConfig.hinting) {
+    // 貌似未处理的异常被吃掉了，所以先判断命令是否存在
+    var ttfautohintInstalled = false;
+    try {
+      child_process.execFileSync('ttfautohint', ['--version'], { cwd: process.cwd() });
+      ttfautohintInstalled = true;
+    } catch(ex) {}
+
+    if (!ttfautohintInstalled) {
+      log.error(ERROR.ttfautohint);
+      process.exit(-2);
+    }
+
     log.info('autohint with ttfautohint');
 
     fs.renameSync(files.ttf, files.ttfUnhinted);
@@ -282,17 +291,16 @@ function generateFonts(buildConfig) {
   // 主要是处理有些fill-rule设置为evenodd的svg文件，因为ttf支持non-zero的模式，所以会导致
   // 生成的字体文件里有些路径被错误填充了
   // 这个功能依赖fontforge
-
-  // 貌似未处理的异常被吃掉了，所以先判断命令是否存在
-  var fontforgeInstalled = false;
-  try {
-    child_process.execFileSync(path.resolve(__dirname, '../scripts/test-fontforge.py'), [], { cwd: process.cwd() });
-    fontforgeInstalled = true;
-  } catch (ex) {}
-
   if (!_.isEmpty(buildConfig.badGlyphs)) {
+    // 貌似未处理的异常被吃掉了，所以先判断命令是否存在
+    var fontforgeInstalled = false;
+    try {
+      child_process.execFileSync(path.resolve(__dirname, '../scripts/test-fontforge.py'), [], { cwd: process.cwd() });
+      fontforgeInstalled = true;
+    } catch (ex) {}
+
     if (!fontforgeInstalled) {
-      log.error('fontforge not installed');
+      log.error(ERROR.fontforge);
       process.exit(-1);
     }
 
