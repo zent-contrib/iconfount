@@ -360,10 +360,8 @@ module.exports = function build(configFile) {
 
   // output dir is relative to config file
   var outputDir = config.output;
-  if (outputDir && !path.isAbsolute(outputDir)) {
+  if (!path.isAbsolute(outputDir)) {
     outputDir = path.join(path.dirname(configFilePath), outputDir);
-  } else if (!outputDir) {
-    outputDir = path.join(path.dirname(configFilePath), 'build');
   }
   config.output = outputDir;
 
