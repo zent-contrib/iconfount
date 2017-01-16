@@ -1,6 +1,6 @@
 {
   "name": "zenticons",
-  "output": "build",
+  "output": "../build",
   "hinting": true,
   "units_per_em": 1000,
   "ascent": 850,

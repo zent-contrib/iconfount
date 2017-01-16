@@ -358,6 +358,15 @@ module.exports = function build(configFile) {
     glyphsDir = path.join(path.dirname(configFilePath), glyphsDir);
   }
 
+  // output dir is relative to config file
+  var outputDir = config.output;
+  if (outputDir && !path.isAbsolute(outputDir)) {
+    outputDir = path.join(path.dirname(configFilePath), outputDir);
+  } else if (!outputDir) {
+    outputDir = path.join(path.dirname(configFilePath), 'build');
+  }
+  config.output = outputDir;
+
   var glyphsPromise = config.glyphs.map(function(glyph) {
     var xml = fs.readFileSync(path.join(glyphsDir, glyph.src), 'utf-8');
 
