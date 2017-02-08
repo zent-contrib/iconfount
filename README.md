@@ -3,6 +3,7 @@
 `iconfount`是一个离线icon font生成工具，支持从多个svg文件生成一套字体以及对应的样式文件。
 
 [![npm version](https://badge.fury.io/js/iconfount.svg)](https://badge.fury.io/js/iconfount) ![LICENSE](https://img.shields.io/badge/license-MIT-blue.svg)
+
 [![NPM](https://nodei.co/npm/iconfount.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/iconfount/)
 
 ## 字体文件兼容性
