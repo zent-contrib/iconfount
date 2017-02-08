@@ -2,6 +2,8 @@
 
 自动修正字体轮廓方向需要安装fontforge。
 
+请参考[fontforge官网安装说明](https://fontforge.github.io/en-US/downloads/)
+
 ## Install fontforge command line tools
 
 `brew install fontforge`

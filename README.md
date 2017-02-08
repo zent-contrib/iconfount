@@ -1,15 +1,27 @@
-# fount
+# iconfount
 
-`fount`是一个icon font生成工具，支持从多个的svg文件生成一套字体以及对应的样式文件。
+`iconfount`是一个离线icon font生成工具，支持从多个svg文件生成一套字体以及对应的样式文件。
 
-## Install
+## 兼容性
 
-`ynpm install -g @youzan/fount` or `yarn global add @youzan/fount`.
+1. 桌面端浏览器：IE6+, Safari, FF, Chrome
+2. 移动端浏览器：绝大部分系统都没有问题，部分*非常老*的安卓系统或者某些古董浏览器可能会有问题。不支持Windows Mobile IE9。
 
-## Usage
+## 安装
+
+`ynpm install -g iconfount` or `yarn global add iconfount`.
+
+## 第三方依赖
+
+这些依赖是可选的，用到特定选项时才需要安装。
+
+1. ttfautohint: `brew install ttfautohint`, `hinting`是`true`的时候需要安装
+2. fontforge: 参见[安装fontforge](https://github.com/youzan/iconfount/blob/master/doc/fontforge.md), 图标`correct_contour_direction`为`true`时需要安装
+
+## 使用
 
 ```text
-Usage: fount --config file [options]
+Usage: iconfount --config file [options]
 
 Options:
   --help        print this message and exit  [boolean]
@@ -17,7 +29,7 @@ Options:
   -t, --test    test configuration and exit  [boolean]
 ```
 
-## Output files
+## 输出文件
 
 ```text
 ├── LICENSE.txt                       版权信息
@@ -43,14 +55,13 @@ Options:
 css目录下已经提供了两种样式选择：完整的和只包含字符定义的css。如果仍不能满足需求，可以使用`codes.json`
 文件自己生成样式。
 
-## 第三方依赖
 
-这些依赖是可选的，用到特定选项时才需要安装。
+## 示例
 
-1. ttfautohint: `brew install ttfautohint`
-2. fontforge: 参见[安装fontforge](doc/fontforge.md)
+`sample`目录下提供了一个示例配置。
 
-## Config file
+
+## 配置文件
 
 支持`json`或者`js`文件，`js`文件的话直接`export`一个包含配置信息的对象。
 
@@ -58,7 +69,7 @@ css目录下已经提供了两种样式选择：完整的和只包含字符定�
 
 `doc/`目录下有一些文档，对详细理解一些配置有帮助。
 
-### Parameters
+### 参数
 
 #### name
 
@@ -66,7 +77,7 @@ type: `string`
 
 required: `false` 
 
-default: `'fount'`
+default: `'iconfount'`
 
 字体名字，最好英文吧
 
@@ -276,3 +287,11 @@ required: `false`
 default: `true`
 
 是否在文件名中加入随机字符串，确保每次生成的文件名都不同。
+
+
+## License
+
+iconfount's code (all files) is distributed under MIT license. See
+[LICENSE](https://github.com/youzan/iconfount/blob/master/LICENSE) file for details.
+
+Many thanks to the [fontello](https://github.com/fontello/fontello) project.

@@ -6,7 +6,7 @@ var logger = new (winston.Logger)({
   transports: [
     new (winston.transports.File)({
       name: 'filelog',
-      filename: 'fount.log',
+      filename: 'iconfount.log',
       level: 'verbose'
     }),
     new (winston.transports.Console)({

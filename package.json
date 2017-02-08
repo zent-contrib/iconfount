@@ -1,10 +1,10 @@
 {
-  "name": "@youzan/fount",
-  "version": "1.0.9",
+  "name": "iconfount",
+  "version": "2.0.0",
   "description": "Create web fonts from svg files",
   "main": "./src/index.js",
   "bin": {
-    "fount": "./bin/fount.js"
+    "iconfount": "./bin/fount.js"
   },
   "files": [
     "bin/",
@@ -18,11 +18,14 @@
     "sample": "node bin/fount.js -c sample/config.json"
   },
   "keywords": [
+    "icon",
     "font",
     "css",
-    "svg"
+    "svg",
+    "ttf",
+    "woff"
   ],
-  "author": "Li Chen <lichen@youzan.com>",
+  "author": "Youzan FE",
   "license": "MIT",
   "dependencies": {
     "ajv": "^4.8.2",

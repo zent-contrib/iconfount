@@ -169,7 +169,7 @@ function fontConfig(config) {
   if (!_.isEmpty(config.name)) {
     fontname = String(config.name).replace(/[^a-z0-9\-_]+/g, '-');
   } else {
-    fontname = 'fount';
+    fontname = 'iconfount';
   }
 
   var glyphsInfo = collectGlyphsInfo(config);

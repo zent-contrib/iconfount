@@ -1,5 +1,5 @@
 {
-  "name": "zenticons",
+  "name": "iconfount",
   "output": "../build",
   "hinting": true,
   "units_per_em": 1000,
@@ -52,11 +52,11 @@
     "css": "rect-fixed"
   }],
   "meta": {
-    "author": "lichen",
+    "author": "Youzan FE",
     "license": "MIT",
-    "license_url": "http://youzan.com",
-    "homepage": "http://youzan.com",
-    "css_prefix_text": "zent-icon-",
+    "license_url": "https://opensource.org/licenses/MIT",
+    "homepage": "http://www.youzan.com",
+    "css_prefix_text": "iconfount-icon-",
     "css_use_suffix": false,
     "columns": 4,
     "filename_hash": true

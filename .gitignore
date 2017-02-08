@@ -2,3 +2,4 @@
 *.log
 build
 node_modules
+.vscode

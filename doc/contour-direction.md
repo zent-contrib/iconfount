@@ -1,6 +1,6 @@
 # 关于SVG的`fill-rule`以及TTF的字符轮廓方向(glyph contour direction)
 
-由于Sketch在设计界的流行，支持导入Sketch生成的SVG文件是`fount`的一个目标。但是Sketch导出的
+由于Sketch在设计界的流行，支持导入Sketch生成的SVG文件是`iconfount`的一个目标。但是Sketch导出的
 SVG文件烂是公认的事实，由于TTF文件并不能100%支持SVG的特性，所以转换的时候有些东西其实是会被丢掉的。
 我们要做的是尽可能保留SVG文件对字符形状的描述，至于颜色之类的根本不重要。
 
@@ -49,5 +49,5 @@ SVG支持的基础图形包括，矩形(`<rect>`)、圆(`<circle>`)、椭圆(`<e
 做到，但是比较麻烦，选择不正常的路径在菜单`Layer -> Paths -> Reverse Order`一般可以解决问题。
 这种方式需要人工干预，尤其是在Sketch下无法看到路径方向的情况下操作很不方便。
 
-`fount`的`correct_contour_direction`参数可以控制是否自动修复这些有问题的路径。这个功能需要
+`iconfount`的`correct_contour_direction`参数可以控制是否自动修复这些有问题的路径。这个功能需要
 安装`fontforge`，而且有个别情况下这个功能可能无法自动修复这些问题。
