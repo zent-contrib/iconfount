@@ -2,7 +2,10 @@
 
 `iconfount`是一个离线icon font生成工具，支持从多个svg文件生成一套字体以及对应的样式文件。
 
-## 兼容性
+[![npm version](https://badge.fury.io/js/iconfount.svg)](https://badge.fury.io/js/iconfount) ![LICENSE](https://img.shields.io/badge/license-MIT-blue.svg)
+[![NPM](https://nodei.co/npm/iconfount.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/iconfount/)
+
+## 字体文件兼容性
 
 1. 桌面端浏览器：IE6+, Safari, FF, Chrome
 2. 移动端浏览器：绝大部分系统都没有问题，部分*非常老*的安卓系统或者某些古董浏览器可能会有问题。不支持Windows Mobile IE9。
