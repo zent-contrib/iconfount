@@ -1,7 +1,7 @@
 {
   "name": "iconfount",
   "output": "../build",
-  "hinting": true,
+  "hinting": false,
   "units_per_em": 1000,
   "ascent": 850,
   "weight": 400,

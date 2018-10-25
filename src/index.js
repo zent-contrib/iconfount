@@ -22,9 +22,9 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
-*/
+ */
 
-"use strict";
+'use strict';
 
 var _ = require('lodash');
 var svgpath = require('svgpath');
@@ -48,48 +48,61 @@ var log = require('./log');
 var ERROR = {
   ttfautohint: 'ttfautohint not installed',
   fontforge: 'fontforge python extension not installed'
-}
+};
 
-// default config is enough
-var svgo = new SVGOptimize();
+var svgo = new SVGOptimize({
+  plugins: [
+    // 这个插件开启之后会导致有些圆一边粗一边细
+    {
+      convertPathData: false
+    }
+  ]
+});
 
 var TEMPLATES_DIR = path.join(__dirname, '../templates');
-var SVG_FONT_TEMPLATE = _.template(fs.readFileSync(path.join(TEMPLATES_DIR, 'font/svg.tpl'), 'utf8'));
-var TEMPLATES = _.reduce({
-  'demo.jade':              'demo.html',
-  'css/css.jade':           'css/${FONTNAME}.css',
-  'css/css-ie7.jade':       'css/${FONTNAME}-ie7.css',
-  'css/css-codes.jade':     'css/${FONTNAME}-codes.css',
-  'css/css-ie7-codes.jade': 'css/${FONTNAME}-ie7-codes.css',
-  'css/css-embedded.jade':  'css/${FONTNAME}-embedded.css',
-  'LICENSE.jade':           'LICENSE.txt',
-  'css/animation.css':      'css/animation.css',
-  'README.txt':             'README.txt'
-}, function (templates, outputName, inputName) {
-  var inputFile = path.join(TEMPLATES_DIR, inputName);
-  var inputData = fs.readFileSync(inputFile, 'utf8');
-  var outputData;
+var SVG_FONT_TEMPLATE = _.template(
+  fs.readFileSync(path.join(TEMPLATES_DIR, 'font/svg.tpl'), 'utf8')
+);
+var TEMPLATES = _.reduce(
+  {
+    'demo.jade': 'demo.html',
+    'css/css.jade': 'css/${FONTNAME}.css',
+    'css/css-ie7.jade': 'css/${FONTNAME}-ie7.css',
+    'css/css-codes.jade': 'css/${FONTNAME}-codes.css',
+    'css/css-ie7-codes.jade': 'css/${FONTNAME}-ie7-codes.css',
+    'css/css-embedded.jade': 'css/${FONTNAME}-embedded.css',
+    'LICENSE.jade': 'LICENSE.txt',
+    'css/animation.css': 'css/animation.css',
+    'README.txt': 'README.txt'
+  },
+  function(templates, outputName, inputName) {
+    var inputFile = path.join(TEMPLATES_DIR, inputName);
+    var inputData = fs.readFileSync(inputFile, 'utf8');
+    var outputData;
 
-  switch (path.extname(inputName)) {
-    case '.jade': // Jade template.
-      outputData = jade.compile(inputData, {
-        pretty: true,
-        filename: inputFile
-      });
-      break;
+    switch (path.extname(inputName)) {
+      case '.jade': // Jade template.
+        outputData = jade.compile(inputData, {
+          pretty: true,
+          filename: inputFile
+        });
+        break;
 
-    case '.tpl': // Lodash template.
-      outputData = _.template(inputData);
-      break;
+      case '.tpl': // Lodash template.
+        outputData = _.template(inputData);
+        break;
 
-    default: // Static file - just do a copy.
-      outputData = _.constant(inputData);
-      break;
-  }
+      default:
+        // Static file - just do a copy.
+        outputData = _.constant(inputData);
+        break;
+    }
 
-  templates[outputName] = outputData;
-  return templates;
-}, {});
+    templates[outputName] = outputData;
+    return templates;
+  },
+  {}
+);
 
 function getRandomString() {
   var hash = crypto.createHash('sha256');
@@ -120,32 +133,31 @@ function generateGlyphsJson(buildConfig) {
       hexCodepoint: hex,
       codepoint: g.code,
       keywords: g.keywords
-    }
+    };
   });
 }
 
 function collectGlyphsInfo(config) {
   var scale = config.units_per_em / 1000;
   var badGlyphs = [];
-  var result = _.map(config.glyphs, function (glyph) {
+  var result = _.map(config.glyphs, function(glyph) {
     var sp = svgpath(glyph.svg.path)
-              .scale(scale, -scale)
-              .translate(0, config.ascent)
-              .abs().round(0).rel();
+      .scale(scale, -scale)
+      .translate(0, config.ascent)
+      .abs()
+      .round(0)
+      .rel();
 
     // 把需要调整路径方向的字符保存起来，后面会交给fontforge处理
     if (glyph.correct_contour_direction) {
       badGlyphs.push(glyph.code);
     }
 
-    return _.assign({},
-      _.pick(glyph, ['src', 'code', 'css', 'keywords']),
-      {
-        width: +(glyph.svg.width * scale).toFixed(1),
-        d: sp.toString(),
-        segments: sp.segments.length
-      }
-    );
+    return _.assign({}, _.pick(glyph, ['src', 'code', 'css', 'keywords']), {
+      width: +(glyph.svg.width * scale).toFixed(1),
+      d: sp.toString(),
+      segments: sp.segments.length
+    });
   });
 
   // Sort result by original codes.
@@ -163,7 +175,9 @@ function fontConfig(config) {
   config.units_per_em = +config.units_per_em || 1000;
   config.ascent = +config.ascent || 850;
   config.weight = config.weight || 400;
-  config.copyright = config.copyright || 'Copyright (C) ' + new Date().getFullYear() + ' by original authors';
+  config.copyright =
+    config.copyright ||
+    'Copyright (C) ' + new Date().getFullYear() + ' by original authors';
 
   var fontname;
   if (!_.isEmpty(config.name)) {
@@ -203,7 +217,7 @@ function fontConfig(config) {
     glyphs: glyphsInfo.glyphs,
     badGlyphs: glyphsInfo.badGlyphs
   };
-};
+}
 
 function generateFonts(buildConfig) {
   var timeStart = Date.now();
@@ -216,15 +230,23 @@ function generateFonts(buildConfig) {
   var fileNameHash = buildConfig.meta.filename_hash;
   var fontNameWithHash = fontname + fileNameHash;
   files = {
-    codes:       path.join(buildConfig.output, 'codes.json'),
-    config:      path.join(buildConfig.output, 'config.json'),
-    svg:         path.join(buildConfig.output, 'font', fontNameWithHash + '.svg'),
-    ttf:         path.join(buildConfig.output, 'font', fontNameWithHash + '.ttf'),
-    ttfUnhinted: path.join(buildConfig.output, 'font', fontNameWithHash + '-unhinted.ttf'),
-    ttfDirectionNotCorrected: path.join(buildConfig.output, 'font', fontNameWithHash + '-direction-not-corrected.ttf'),
-    eot:         path.join(buildConfig.output, 'font', fontNameWithHash + '.eot'),
-    woff:        path.join(buildConfig.output, 'font', fontNameWithHash + '.woff'),
-    woff2:       path.join(buildConfig.output, 'font', fontNameWithHash + '.woff2')
+    codes: path.join(buildConfig.output, 'codes.json'),
+    config: path.join(buildConfig.output, 'config.json'),
+    svg: path.join(buildConfig.output, 'font', fontNameWithHash + '.svg'),
+    ttf: path.join(buildConfig.output, 'font', fontNameWithHash + '.ttf'),
+    ttfUnhinted: path.join(
+      buildConfig.output,
+      'font',
+      fontNameWithHash + '-unhinted.ttf'
+    ),
+    ttfDirectionNotCorrected: path.join(
+      buildConfig.output,
+      'font',
+      fontNameWithHash + '-direction-not-corrected.ttf'
+    ),
+    eot: path.join(buildConfig.output, 'font', fontNameWithHash + '.eot'),
+    woff: path.join(buildConfig.output, 'font', fontNameWithHash + '.woff'),
+    woff2: path.join(buildConfig.output, 'font', fontNameWithHash + '.woff2')
   };
 
   // Prepare temporary working directory.
@@ -256,14 +278,17 @@ function generateFonts(buildConfig) {
   // Autohint the resulting TTF.
   // Don't allow hinting if font has "strange" glyphs.
   // That's useless anyway, and can hang ttfautohint < 1.0
-  var maxSegments = _.maxBy(buildConfig.glyphs, glyph => glyph.segments).segments;
+  var maxSegments = _.maxBy(buildConfig.glyphs, glyph => glyph.segments)
+    .segments;
   if (maxSegments <= 500 && buildConfig.hinting) {
     // 貌似未处理的异常被吃掉了，所以先判断命令是否存在
     var ttfautohintInstalled = false;
     try {
-      child_process.execFileSync('ttfautohint', ['--version'], { cwd: process.cwd() });
+      child_process.execFileSync('ttfautohint', ['--version'], {
+        cwd: process.cwd()
+      });
       ttfautohintInstalled = true;
-    } catch(ex) {}
+    } catch (ex) {}
 
     if (!ttfautohintInstalled) {
       log.error(ERROR.ttfautohint);
@@ -273,16 +298,20 @@ function generateFonts(buildConfig) {
     log.info('autohint with ttfautohint');
 
     fs.renameSync(files.ttf, files.ttfUnhinted);
-    child_process.execFileSync('ttfautohint', [
-      '--no-info',
-      '--windows-compatibility',
-      '--symbol',
-      // temporary workaround for #464
-      // https://github.com/fontello/fontello/issues/464#issuecomment-202244651
-      '--fallback-script=latn',
-      files.ttfUnhinted,
-      files.ttf
-    ], { cwd: process.cwd() });
+    child_process.execFileSync(
+      'ttfautohint',
+      [
+        '--no-info',
+        '--windows-compatibility',
+        '--symbol',
+        // temporary workaround for #464
+        // https://github.com/fontello/fontello/issues/464#issuecomment-202244651
+        '--fallback-script=latn',
+        files.ttfUnhinted,
+        files.ttf
+      ],
+      { cwd: process.cwd() }
+    );
 
     fs.unlinkSync(files.ttfUnhinted);
     log.info('write ttf autohint');
@@ -295,7 +324,11 @@ function generateFonts(buildConfig) {
     // 貌似未处理的异常被吃掉了，所以先判断命令是否存在
     var fontforgeInstalled = false;
     try {
-      child_process.execFileSync(path.resolve(__dirname, '../scripts/test-fontforge.py'), [], { cwd: process.cwd() });
+      child_process.execFileSync(
+        path.resolve(__dirname, '../scripts/test-fontforge.py'),
+        [],
+        { cwd: process.cwd() }
+      );
       fontforgeInstalled = true;
     } catch (ex) {}
 
@@ -307,10 +340,11 @@ function generateFonts(buildConfig) {
     log.info('try correct contour direction with fontforge');
 
     fs.renameSync(files.ttf, files.ttfDirectionNotCorrected);
-    child_process.execFileSync(path.resolve(__dirname, '../scripts/correct-direction.py'), [
-      files.ttfDirectionNotCorrected,
-      files.ttf
-    ].concat(buildConfig.badGlyphs), { cwd: process.cwd() });
+    child_process.execFileSync(
+      path.resolve(__dirname, '../scripts/correct-direction.py'),
+      [files.ttfDirectionNotCorrected, files.ttf].concat(buildConfig.badGlyphs),
+      { cwd: process.cwd() }
+    );
     fs.unlinkSync(files.ttfDirectionNotCorrected);
     log.info('write ttf correct direction');
   }
@@ -336,15 +370,15 @@ function generateFonts(buildConfig) {
     var outputData = templateData(buildConfig);
 
     outputData = outputData
-                    .replace('%WOFF64%', b64.fromByteArray(woffOutput))
-                    .replace('%TTF64%', b64.fromByteArray(ttfOutput));
+      .replace('%WOFF64%', b64.fromByteArray(woffOutput))
+      .replace('%TTF64%', b64.fromByteArray(ttfOutput));
 
     fs.writeFileSync(outputFile, outputData, 'utf8');
   });
   log.info('write demo/css files');
 
   var timeEnd = Date.now();
-  log.info('Generated in ' + (timeEnd - timeStart) / 1000)
+  log.info('Generated in ' + (timeEnd - timeStart) / 1000);
 }
 
 module.exports = function build(configFile) {
@@ -383,14 +417,15 @@ module.exports = function build(configFile) {
     });
   });
 
-  return Promise.all(glyphsPromise)
-    .then(function(glyphs) {
-      var buildConfig = fontConfig(_.extend({}, config, {
+  return Promise.all(glyphsPromise).then(function(glyphs) {
+    var buildConfig = fontConfig(
+      _.extend({}, config, {
         glyphs: glyphs
-      }));
+      })
+    );
 
-      generateFonts(buildConfig);
+    generateFonts(buildConfig);
 
-      return buildConfig;
-    });
+    return buildConfig;
+  });
 };
