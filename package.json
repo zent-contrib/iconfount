@@ -1,6 +1,6 @@
 {
   "name": "iconfount",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Create web fonts from svg files",
   "main": "./src/index.js",
   "bin": {
