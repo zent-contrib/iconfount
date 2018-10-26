@@ -404,7 +404,7 @@ module.exports = function build(configFile) {
 
     return new Promise(function(resolve, reject) {
       try {
-        svgo.optimize(xml, function(cleanXml) {
+        svgo.optimize(xml).then(function(cleanXml) {
           if (cleanXml.error) {
             return reject(error);
           }
