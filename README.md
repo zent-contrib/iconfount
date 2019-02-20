@@ -1,5 +1,3 @@
-
-
 # iconfount
 
 `iconfount`是一个离线icon font生成工具，支持从多个svg文件生成一套字体以及对应的样式文件。
@@ -24,6 +22,8 @@
 
 ## 使用
 
+### CLI
+
 ```text
 Usage: iconfount --config file [options]
 
@@ -31,6 +31,19 @@ Options:
   --help        print this message and exit  [boolean]
   -c, --config  config file to read  [required]
   -t, --test    test configuration and exit  [boolean]
+```
+
+### API
+
+#### iconfount(config) -> buildConfig
+
+* `config` - config file to read  [required]
+* `buildConfig` - full config for generate, include svg infos  [promise]
+
+``` js
+const iconfount = require('iconfount')
+
+iconfount('file')
 ```
 
 ## 输出文件
@@ -63,7 +76,6 @@ css目录下已经提供了两种样式选择：完整的和只包含字符定�
 ## 示例
 
 `sample`目录下提供了一个示例配置。
-
 
 ## 配置文件
 
@@ -191,7 +203,6 @@ required: `true`
 图标的CSS名字，图标最终的class是`${meta.css_prefix_text}${css}`，如果`meta.css_use_suffix`
 是`true`，图标最终的class是`${css}${meta.css_prefix_text}`。
 
-
 ##### glyphs.correct_contour_direction
 
 type: `boolean`
@@ -291,7 +302,6 @@ required: `false`
 default: `true`
 
 是否在文件名中加入随机字符串，确保每次生成的文件名都不同。
-
 
 ## License
 
