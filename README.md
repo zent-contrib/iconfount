@@ -35,7 +35,7 @@ Options:
 
 ### API
 
-#### iconfount(config) -> buildConfig
+#### iconfount(config): buildConfig
 
 * `config` - config file to read  [required]
 * `buildConfig` - full config for generate, include svg infos  [promise]
