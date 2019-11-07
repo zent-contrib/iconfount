@@ -272,7 +272,7 @@ function generateFonts(buildConfig) {
 
   // Convert SVG to TTF
   var ttf = svg2ttf(svgOutput, { copyright: buildConfig.font.copyright });
-  fs.writeFileSync(files.ttf, new Buffer(ttf.buffer));
+  fs.writeFileSync(files.ttf, Buffer.from(ttf.buffer));
   log.info('write ttf first-pass');
 
   // Autohint the resulting TTF.
@@ -352,15 +352,15 @@ function generateFonts(buildConfig) {
   // generate other font types
   var ttfOutput = new Uint8Array(fs.readFileSync(files.ttf));
   var eotOutput = ttf2eot(ttfOutput).buffer;
-  fs.writeFileSync(files.eot, new Buffer(eotOutput));
+  fs.writeFileSync(files.eot, Buffer.from(eotOutput));
   log.info('write eot file');
 
   var woffOutput = ttf2woff(ttfOutput).buffer;
-  fs.writeFileSync(files.woff, new Buffer(woffOutput));
+  fs.writeFileSync(files.woff, Buffer.from(woffOutput));
   log.info('write woff file');
 
   var woff2Output = ttf2woff2(ttfOutput).buffer;
-  fs.writeFileSync(files.woff2, new Buffer(woff2Output));
+  fs.writeFileSync(files.woff2, Buffer.from(woff2Output));
   log.info('write woff2 file');
 
   // Write template files. (generate dynamic and copy static)
