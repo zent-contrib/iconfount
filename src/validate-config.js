@@ -4,9 +4,8 @@ var Ajv = require('ajv');
 var path = require('path');
 
 var schema = require('./config-schema');
-var log = require('./log');
 
-var ajv = Ajv({allErrors: true});
+var ajv = new Ajv({allErrors: true});
 var validate = ajv.compile(schema);
 
 module.exports = function testConfig(configFile) {

@@ -1,5 +1,5 @@
 {
-  "name": "iconfount",
+  "name": "demo",
   "output": "../build",
   "hinting": false,
   "units_per_em": 1000,
@@ -19,17 +19,17 @@
     "keywords": ["decorate"],
     "src": "decorate.svg",
     "css": "decorate",
-    "correct_contour_direction": true
+    "correct_contour_direction": false
   }, {
     "keywords": ["calendar"],
     "src": "calendar.svg",
     "css": "calendar",
-    "correct_contour_direction": true
+    "correct_contour_direction": false
   }, {
     "keywords": ["shop"],
     "src": "shop.svg",
     "css": "shop",
-    "correct_contour_direction": true
+    "correct_contour_direction": false
   }, {
     "keywords": ["browser"],
     "src": "browser.svg",
@@ -56,7 +56,7 @@
     "license": "MIT",
     "license_url": "https://opensource.org/licenses/MIT",
     "homepage": "http://www.youzan.com",
-    "css_prefix_text": "iconfount-icon-",
+    "css_prefix_text": "demo-icon-",
     "css_use_suffix": false,
     "columns": 4,
     "filename_hash": true

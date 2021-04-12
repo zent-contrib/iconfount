@@ -2,7 +2,6 @@
 
 'use strict';
 
-var path = require('path');
 var argv = require('yargs')
   .usage('Usage: $0 --config file [options]')
   .demand('config')

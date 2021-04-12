@@ -1,44 +1,47 @@
 // json-schema for font config validation
 
-'use strict';
+"use strict";
 
 module.exports = {
-  type: 'object',
+  type: "object",
   additionalProperties: false,
-  required: ['name', 'output', 'glyphs', 'glyphs_dir'],
+  required: ["name", "output", "glyphs", "glyphs_dir"],
   properties: {
-    name: { type: 'string' },
-    output: { type: 'string' },
-    hinting: { type: 'boolean' },
-    units_per_em: { type: 'integer', minimum: 10 },
-    ascent: { type: 'integer', minimum: 10 },
-    weight: { type: 'number', minimum: 100 },
-    copyright: { type: 'string' },
-    start_codepoint: { type: 'number', "maximum": 63743, "minimum": 57344 },
-    glyphs_dir: { type: 'string' },
+    name: { type: "string" },
+    output: { type: "string" },
+    hinting: { type: "boolean" },
+    units_per_em: { type: "integer", minimum: 10 },
+    ascent: { type: "integer", minimum: 10 },
+    weight: { type: "number", minimum: 100 },
+    copyright: { type: "string" },
+    start_codepoint: { type: "number", maximum: 63743, minimum: 57344 },
+    glyphs_dir: { type: "string" },
     glyphs: {
-      type: 'array',
+      type: "array",
       minItems: 1,
       items: {
-        css: { type: 'string' },
-        src: { type: 'string' },
-        keyword: { type: 'array',  minItems: 1, items: { type: 'string' } },
-        correct_contour_direction: { type: 'boolean' },
-        required: ['css', 'src']
-      }
+        type: "object",
+        properties: {
+          css: { type: "string" },
+          src: { type: "string" },
+          keywords: { type: "array", minItems: 1, items: { type: "string" } },
+          correct_contour_direction: { type: "boolean" },
+        },
+        required: ["css", "src"],
+      },
     },
     meta: {
-      type: 'object',
+      type: "object",
       properties: {
-        author: { type: 'string' },
-        license: { type: 'string' },
-        license_url: { type: 'string' },
-        homepage: { type: 'string' },
-        css_prefix_text: { type: 'string' },
-        css_use_suffix: { type: 'boolean' },
-        columns: { type: 'number' },
-        filename_hash: { type: 'boolean' }
-      }
-    }
-  }
+        author: { type: "string" },
+        license: { type: "string" },
+        license_url: { type: "string" },
+        homepage: { type: "string" },
+        css_prefix_text: { type: "string" },
+        css_use_suffix: { type: "boolean" },
+        columns: { type: "number" },
+        filename_hash: { type: "boolean" },
+      },
+    },
+  },
 };
