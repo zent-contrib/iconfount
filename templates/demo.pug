@@ -93,7 +93,7 @@ html
             - if (g['css-ext']) css_class += ' ' + g['css-ext']
 
             - var code = g.code.toString(16)
-              .the-icons(class=col_class, title=`Code: 0x${code}`)
+              .the-icons(class=col_class, title=`${css_name}(0x${code})`)
                 i(
                   class='demo-icon'
                   class=css_class
