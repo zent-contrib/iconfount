@@ -19,17 +19,17 @@
     "keywords": ["decorate"],
     "src": "decorate.svg",
     "css": "decorate",
-    "correct_contour_direction": false
+    "correct_contour_direction": true
   }, {
     "keywords": ["calendar"],
     "src": "calendar.svg",
     "css": "calendar",
-    "correct_contour_direction": false
+    "correct_contour_direction": true
   }, {
     "keywords": ["shop"],
     "src": "shop.svg",
     "css": "shop",
-    "correct_contour_direction": false
+    "correct_contour_direction": true
   }, {
     "keywords": ["browser"],
     "src": "browser.svg",
