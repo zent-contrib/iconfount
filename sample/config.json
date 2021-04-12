@@ -1,5 +1,5 @@
 {
-  "name": "iconfount",
+  "name": "demo",
   "output": "../build",
   "hinting": false,
   "units_per_em": 1000,
@@ -56,7 +56,7 @@
     "license": "MIT",
     "license_url": "https://opensource.org/licenses/MIT",
     "homepage": "http://www.youzan.com",
-    "css_prefix_text": "iconfount-icon-",
+    "css_prefix_text": "demo-icon-",
     "css_use_suffix": false,
     "columns": 4,
     "filename_hash": true
