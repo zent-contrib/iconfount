@@ -342,11 +342,11 @@ function generateFonts(buildConfig) {
 
   // generate other font types
   var ttfOutput = new Uint8Array(fs.readFileSync(files.ttf));
-  var eotOutput = ttf2eot(ttfOutput).buffer;
+  var eotOutput = ttf2eot(ttfOutput);
   fs.writeFileSync(files.eot, Buffer.from(eotOutput));
   log.info("write eot file");
 
-  var woffOutput = ttf2woff(ttfOutput).buffer;
+  var woffOutput = ttf2woff(ttfOutput);
   fs.writeFileSync(files.woff, Buffer.from(woffOutput));
   log.info("write woff file");
 
