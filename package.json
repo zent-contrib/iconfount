@@ -45,7 +45,7 @@
     "ttf2woff": "^3.0.0",
     "ttf2woff2": "^4.0.4",
     "winston": "^3.2.1",
-    "xmldom": "^0.6.0",
+    "@xmldom/xmldom": "^0.7.3",
     "yargs": "^17.1.1"
   }
 }

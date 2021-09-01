@@ -28,7 +28,7 @@
 
 'use strict';
 
-var XMLDOMParser = require('xmldom').DOMParser;
+var XMLDOMParser = require('@xmldom/xmldom').DOMParser;
 var _ = require('lodash');
 var SvgPath = require('svgpath');
 
