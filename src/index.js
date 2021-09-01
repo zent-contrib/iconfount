@@ -40,7 +40,7 @@ var child_process = require("child_process");
 var pug = require("pug");
 var b64 = require("base64-js");
 var crypto = require("crypto");
-var { optimize, extendDefaultPlugins } = require("svgo");
+var { optimize } = require("svgo");
 
 var loadSvg = require("./svg");
 var log = require("./log");
@@ -394,13 +394,15 @@ module.exports = function build(configFile) {
     var xml = fs.readFileSync(path.join(glyphsDir, glyph.src), "utf-8");
 
     const cleanXml = optimize(xml, {
-      plugins: extendDefaultPlugins([
-        // 这个插件开启之后会导致有些圆一边粗一边细
-        {
-          name: "convertPathData",
-          active: false,
-        },
-      ]),
+      plugins: [{
+        name: 'preset-default',
+        params: {
+          // 有些软件生成的 SVG 文件虽然本身写的不太对，但是浏览器里渲染是正常的，转换后会导致各种问题
+          // https://github.com/svg/svgo/issues?q=convertPathData
+          convertPathData: false
+        }
+      }]
+
     });
 
     if (cleanXml.error) {
